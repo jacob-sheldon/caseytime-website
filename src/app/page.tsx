@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen">
       {/* Background image - you can add a random nature image service here */}
-      <div className="absolute inset-0 backdrop" />
+      <div className="absolute inset-0 backdrop z-0" />
       
       {/* Add Pomodoro and Tasks components */}
       <Pomodoro />

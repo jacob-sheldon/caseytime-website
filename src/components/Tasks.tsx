@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-type Task = {
+interface Task {
   id: number;
   text: string;
   completed: boolean;
-};
+}
 
 export default function Tasks() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,11 +16,12 @@ export default function Tasks() {
   const addTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTask.trim()) return;
-
-    setTasks([
-      ...tasks,
-      { id: Date.now(), text: newTask.trim(), completed: false }
-    ]);
+    
+    setTasks([...tasks, {
+      id: Date.now(),
+      text: newTask,
+      completed: false
+    }]);
     setNewTask('');
   };
 
@@ -35,16 +36,17 @@ export default function Tasks() {
   };
 
   return (
-    <div className="fixed top-4 right-20 text-white">
+    <div className="fixed top-4 right-4 text-white z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+        type="button"
       >
         {isOpen ? '×' : '📋'}
       </button>
 
       {isOpen && (
-        <div className="absolute top-12 right-0 bg-black/50 backdrop-blur-md rounded-lg p-4 w-[300px]">
+        <div className="absolute top-12 right-0 bg-black/50 backdrop-blur-md rounded-lg p-4 w-[300px] z-50">
           <h3 className="text-xl font-light mb-4">Tasks</h3>
           
           <form onSubmit={addTask} className="mb-4">

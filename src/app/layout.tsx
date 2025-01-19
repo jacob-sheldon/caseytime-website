@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Momentum Dashboard",
-  description: "Your personal dashboard for focus and productivity",
+  title: "Casey Time",
+  description: "Your personal dashboard for focus and productivity like Momentum",
 };
 
 export default function RootLayout({

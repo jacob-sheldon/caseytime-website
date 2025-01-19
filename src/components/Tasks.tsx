@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Task {
   id: number;
@@ -12,6 +12,19 @@ export default function Tasks() {
   const [isOpen, setIsOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
+
+  // Load tasks from localStorage when component mounts
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +90,7 @@ export default function Tasks() {
                 <button
                   onClick={() => deleteTask(task.id)}
                   className="ml-auto text-white/50 hover:text-white"
+                  type="button"
                 >
                   ×
                 </button>

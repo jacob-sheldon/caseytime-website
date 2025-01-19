@@ -1,0 +1,88 @@
+'use client';
+
+import { useState } from 'react';
+
+type Task = {
+  id: number;
+  text: string;
+  completed: boolean;
+};
+
+export default function Tasks() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTask.trim()) return;
+
+    setTasks([
+      ...tasks,
+      { id: Date.now(), text: newTask.trim(), completed: false }
+    ]);
+    setNewTask('');
+  };
+
+  const toggleTask = (id: number) => {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter(task => task.id !== id));
+  };
+
+  return (
+    <div className="fixed top-4 right-20 text-white">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+      >
+        {isOpen ? '×' : '📋'}
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-12 right-0 bg-black/50 backdrop-blur-md rounded-lg p-4 w-[300px]">
+          <h3 className="text-xl font-light mb-4">Tasks</h3>
+          
+          <form onSubmit={addTask} className="mb-4">
+            <input
+              type="text"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              placeholder="Add a new task..."
+              className="w-full bg-white/10 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white/30"
+            />
+          </form>
+
+          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+            {tasks.map(task => (
+              <div
+                key={task.id}
+                className="flex items-center gap-2 bg-white/5 rounded p-2"
+              >
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleTask(task.id)}
+                  className="rounded"
+                />
+                <span className={task.completed ? 'line-through text-white/50' : ''}>
+                  {task.text}
+                </span>
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="ml-auto text-white/50 hover:text-white"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+} 
